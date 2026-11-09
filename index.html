@@ -73,7 +73,7 @@ const IT=[];V.forEach(([w,lv,p,m,f,d])=>IT.push({id:"v:"+w,k:"v",lv,tx:"("+p+") 
 R.forEach(r=>r.qs.forEach((q,j)=>IT.push({id:r.id+":"+j,k:"r",ps:r,tx:q.t,o:q.o.map((t,i)=>[t,q.e[i],i===q.a?1:0])})));
 let mode="v",Q=[],i=0,sc=0,miss=[],lock=false,DB=null,UID=null,SK="s0",ans=0;
 if(typeof claude!=="undefined")(async()=>{try{let u=await claude.use("user"),d=await claude.use("db");if(u&&d){UID=await u.id();DB=d}}catch(e){}})();
-const SHEET_URL="https://script.google.com/macros/s/AKfycbya_02Fpb9M_YonZQjLV-_Dzw2_l3ykE9RmKlW9jtQ26bi5XqrC7fl2Rg-KPlefvFAi/exec";
+const SHEET_URL="https://script.google.com/macros/s/AKfycbxZ3gcafQhyx3-TFzarrBgAIPrEGIglMq0acoP2L-CCmSybes_Vsnc4C7XeIJ-Awb23/exec";
 function lg(){if(SHEET_URL){try{fetch(SHEET_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain"},body:JSON.stringify({sid:SK,name:$("nm").value||"",mode:mode,answered:ans,total:Q.length,score:sc,missed:miss.map(x=>x.id)})}).catch(()=>{})}catch(e){}}if(!DB||!UID)return;try{DB.doc("log/"+UID+"/attempts/"+SK).set({t:Date.now(),name:$("nm").value||"",mode,answered:ans,total:Q.length,score:sc,missed:miss.map(x=>x.id)}).catch(()=>{})}catch(e){}}
 function tabs(){let n=sv().length;$("tabs").replaceChildren(...[["v","Từ vựng ("+V.length+")"],["r","Đọc hiểu ("+R.length+" bài)"],["w","Ôn câu sai ("+n+")"]].map(([k,l])=>{let b=document.createElement("button");b.className="t"+(mode===k?" on":"");b.textContent=l;b.onclick=()=>start(k);return b}))}
 function start(k,list){mode=k;let pool=list||(k==="w"?IT.filter(x=>sv().includes(x.id)):IT.filter(x=>x.k===k));Q=k==="v"||list||k==="w"?sh(pool):pool;i=0;sc=0;miss=[];SK="s"+Date.now();ans=0;tabs();Q.length?show():empty()}
